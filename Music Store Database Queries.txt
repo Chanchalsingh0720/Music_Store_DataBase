@@ -1,0 +1,72 @@
+Set 1 (Easy)
+
+Q1. Who is the senior most employee based on job title?
+
+Sol-:
+
+select * from employee 
+order by levels desc limit 1;
+
+Q2. Which countries have the most Invoices?
+
+Sol-:
+
+select COUNT(*), BILLING_COUNTRY
+FROM INVOICE
+GROUP BY BILLING_COUNTRY
+ORDER BY COUNT(*) DESC ;
+
+Q3. What are top 3 values of total invoice?
+
+Sol-:
+
+SELECT * from invoice
+order by total desc
+limit 3;
+
+Q4. Which city has the best customers? 
+We would like to throw a promotional Music Festival in the city we made the most money.
+Write a query that returns one city that has the highest sum of invoice totals. 
+Return both the city name & sum of all invoice totals
+
+Sol-:
+
+select 
+billing_city, 
+sum(total)as invoice_total
+from 
+Invoice
+group by billing_city
+order by invoice_total desc;
+
+Q5. Who is best customer? 
+The customer who has spent the most money will be declared as the best customer.
+Write a query that returns the person who has spent the most money.
+
+Sol-:
+
+select C.first_name, C.last_name,SUM(I.total) as total from 
+customer C join invoice I
+on C.customer_id=I.customer_id
+group by C.Customer_id
+order by total desc limit 1;
+
+
+Set 2 (Moderate)
+
+Q1: Write a query to return the email, first name, last name,
+& Genre of all Rock Music listeners. 
+Return your list ordered alphabetically by email starting with A.
+
+select Distinct C.email, C.first_name, C.last_name
+from Customer C
+Join Invoice I on C.Customer_id=I.Customer_id
+Join Invoice_Line IL on I.Invoice_Id=IL.Invoice_Id
+where track_id IN(
+	Select track_id from track T
+	Join Genre G on T.Genre_id=G.Genre_id
+	where G.name like 'Rock'
+)
+order by email;
+
+
